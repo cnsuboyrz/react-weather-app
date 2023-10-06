@@ -97,6 +97,7 @@ function AddCityDrawer(props) {
         placement="right"
         onClose={onClose}
         finalFocusRef={btnRef}
+        size={"sm"}
       >
         <DrawerOverlay />
         <DrawerContent>

@@ -1,18 +1,16 @@
 import {
   Drawer,
   DrawerBody,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
   Button,
-  Input,
   useDisclosure,
 } from "@chakra-ui/react";
 import React from "react";
 import { HamburgerIcon } from "@chakra-ui/icons";
-
+import { IoIosMoon } from "react-icons/io";
 function NavDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
@@ -31,18 +29,13 @@ function NavDrawer() {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
+          <DrawerHeader>Weather App</DrawerHeader>
 
           <DrawerBody>
-            <Input placeholder="Type here..." />
-          </DrawerBody>
-
-          <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
+            <Button colorScheme="facebook" mr={3} onClick={onClose}>
+              <IoIosMoon />
             </Button>
-            <Button colorScheme="blue">Save</Button>
-          </DrawerFooter>
+          </DrawerBody>
         </DrawerContent>
       </Drawer>
     </>

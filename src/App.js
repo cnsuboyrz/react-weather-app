@@ -6,11 +6,11 @@ import HeroBox from "./components/HeroBox";
 import WeatherCard from "./components/WeatherCard";
 
 const DUMMY_CITIES = [
-  // {
-  //   city: "London",
-  //   id: "UK",
-  //   country: "United Kingdom",
-  // },
+  {
+    city: "London",
+    id: "UK",
+    country: "United Kingdom",
+  },
 ];
 
 const api = {
@@ -23,27 +23,34 @@ function App() {
   const [weatherData, setWeatherData] = useState([]);
 
   useEffect(() => {
-    cities.forEach((city) => {
-      const encodedCityName = encodeURIComponent(city.city);
-      fetch(
-        `${api.base}weather?q=${encodedCityName}&units=metric&appid=${api.key}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setWeatherData((prevData) => [
-            {
-              weatherIcon: data.weather[0].icon,
-              cityName: city.city,
-              iso: city.id,
-              description: data.weather[0].description,
-              currentTemp: Math.round(data.main.temp),
-              feelsLike: Math.round(data.main.feels_like),
-              humidity: Math.round(data.main.humidity),
-            },
-            ...prevData,
-          ]);
-        });
-    });
+    const fetchData = async () => {
+      const newWeatherData = [];
+      for (const city of cities) {
+        const encodedCityName = encodeURIComponent(city.city);
+
+        const response = await fetch(
+          ` ${api.base}weather?q=${encodedCityName}&units=metric&appid=${api.key}`
+        );
+        const data = await response.json();
+
+        if (data.weather && data.weather[0]) {
+          newWeatherData.push({
+            weatherIcon: data.weather[0].icon,
+            cityName: city.city,
+            iso: city.id,
+            description: data.weather[0].description,
+            currentTemp: Math.round(data.main.temp),
+            feelsLike: Math.round(data.main.feels_like),
+            humidity: Math.round(data.main.humidity),
+          });
+        } else {
+        }
+      }
+
+      setWeatherData(newWeatherData);
+    };
+
+    fetchData();
   }, [cities]);
 
   const addCityDataHandler = (cityData) => {
@@ -55,7 +62,8 @@ function App() {
     <ChakraProvider>
       <NavBar></NavBar>
       <HeroBox onAddCityData={addCityDataHandler}></HeroBox>
-      <div style={{ marginLeft: "120px", marginRight: "120px" }}>
+      <div style={{ marginLeft: "220px", marginRight: "120px" }}>
+        {console.log({ cities })}
         {weatherData.map((weather, index) => (
           <WeatherCard
             key={index}
